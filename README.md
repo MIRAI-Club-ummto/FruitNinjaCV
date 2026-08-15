@@ -1,4 +1,4 @@
-# 🍉 Fruit Ninja CV
+#  Fruit Ninja CV
 
 Fruit Ninja contrôlé par **gestes de la main** en temps réel via la webcam.  
 Basé sur **OpenCV**, **MediaPipe Hands** et **Pygame**.
