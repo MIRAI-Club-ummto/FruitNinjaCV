@@ -48,6 +48,11 @@ def main() -> None:
     renderer     = Renderer(screen, width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
     menu         = Menu(screen, width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
 
+    # Écran de chargement 
+    if not renderer.loading_screen():
+        pygame.quit()
+        sys.exit()
+
     # ── Boucle d'application : MENU -> PLAYING -> GAME_OVER -> MENU ──
     app_running = True
     while app_running:
