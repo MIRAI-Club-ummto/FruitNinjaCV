@@ -152,6 +152,8 @@ class Renderer:
                 (20, 20, 30)
             )
 
+        self.load_sounds()
+
                 # ── Logo ───────────────────────────────────
         logo_path = _IMAGES / "logo.png"
 
@@ -174,6 +176,29 @@ class Renderer:
         pygame.mixer.music.set_volume(
             0.5
         )
+
+
+        self.slice_sound = pygame.mixer.Sound(
+            "assets/sounds/slice.wav"
+    )
+
+        self.bomb_sound = pygame.mixer.Sound(
+            "assets/sounds/bomb.wav"
+        )
+
+        self.gameover_sound = pygame.mixer.Sound(
+            "assets/sounds/Game-over.wav"
+        )
+
+        self.combo_sound = pygame.mixer.Sound(
+                    "assets/sounds/combo-1.wav"
+        )
+
+        self.slice_sound.set_volume(0.5)
+        self.bomb_sound.set_volume(0.7)
+        self.combo_sound.set_volume(0.6)
+        self.gameover_sound.set_volume(0.7)
+
 
     # FRUITS DU LOADING
 
@@ -221,8 +246,6 @@ class Renderer:
 
     def loading_screen(self):
 
-        self.load_sounds()
-
         pygame.mixer.music.play(-1)
 
         loading_steps = [
@@ -258,7 +281,6 @@ class Renderer:
                     if event.type == pygame.KEYDOWN:
 
                         if event.key == pygame.K_SPACE:
-                            pygame.mixer.music.fadeout(800)
                             return True
 
             # BACKGROUND
@@ -554,6 +576,18 @@ class Renderer:
              game: GameManager,
              blade: BladeTracker) -> None:
         """Dessine une frame complète."""
+
+        if game.play_slice_sound:
+            self.slice_sound.play()
+
+        if game.play_bomb_sound:
+            self.bomb_sound.play()
+
+        if game.play_combo_sound:
+            self.combo_sound.play()
+
+        if game.play_gameover_sound:
+            self.gameover_sound.play()
 
         # 1. Fond
         self._draw_background(frame_bgr)
