@@ -53,7 +53,8 @@ def main() -> None:
         pygame.quit()
         sys.exit()
 
-    # ── Boucle d'application : MENU -> PLAYING -> GAME_OVER -> MENU ──
+
+    # Boucle d'application : MENU -> PLAYING -> GAME_OVER -> MENU 
     app_running = True
     while app_running:
 
@@ -64,6 +65,8 @@ def main() -> None:
             break
 
         game = GameManager(width=WINDOW_WIDTH, height=WINDOW_HEIGHT, difficulty=difficulty)
+        # Arreter la musique du menu
+        pygame.mixer.music.stop()
         game.start()
         blade.clear()
 
@@ -108,6 +111,8 @@ def main() -> None:
                     game.restart()
                     blade.clear()
                 elif action == "menu":
+                    if not pygame.mixer.music.get_busy():
+                        pygame.mixer.music.play(-1)
                     playing = False       # retourne à la boucle de menu, même app_running
                 else:
                     playing = False
