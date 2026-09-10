@@ -74,6 +74,11 @@ class GameManager:
         if self._state != GameState.PLAYING:
             return
 
+        self.play_slice_sound = False
+        self.play_bomb_sound = False
+        self.play_combo_sound = False
+        self.play_gameover_sound = False
+
         # Une bombe explose : on laisse l'animation se terminer avant de
         # déclencher le vrai Game Over (pas de spawn ni de score entre-temps).
         if self._exploding_bomb is not None:
@@ -81,6 +86,7 @@ class GameManager:
             if self._exploding_bomb.state == FruitState.DEAD:
                 self.score_manager.bomb_hit()
                 self._exploding_bomb = None
+                self.play_gameover_sound = True
                 self._state = GameState.OVER
             return
 
@@ -101,6 +107,7 @@ class GameManager:
 
         # 4a. Fruits tranchés
         for fruit in result.sliced_fruits:
+            self.play_slice_sound = True
             earned = self.score_manager.add_slice(fruit.points)
             self.slice_effects.append({
                 "pos":   (int(fruit.x), int(fruit.y)),
@@ -110,11 +117,13 @@ class GameManager:
 
         # 4b. Combo flash
         if result.sliced_fruits and self.score_manager.combo >= 3:
+            self.play_combo_sound = True
             self.combo_flash_timer = 50
 
         # 4c. Bombes : on ne perd pas les vies tout de suite, l'explosion
         # doit d'abord s'afficher (voir en haut de cette méthode).
         if result.bomb_hit:
+            self.play_bomb_sound = True
             self._exploding_bomb = result.exploded_bombs[0]
 
         # 4d. Fruits manqués
@@ -135,6 +144,7 @@ class GameManager:
 
         # 7. Vérification game over
         if self.score_manager.is_game_over:
+            self.play_gameover_sound = True
             self._state = GameState.OVER
 
     # ──────────────────────────────────────────────
