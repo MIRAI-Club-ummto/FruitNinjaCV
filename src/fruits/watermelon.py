@@ -4,7 +4,7 @@ from .fruit import Fruit
 class Watermelon(Fruit):
     def __init__(self, x: float, y: float, vx: float, vy: float) -> None:
         super().__init__(x, y, vx, vy,
-                         radius=62,
+                         radius=42,
                          image_path="watermelon.png",
                          points=3)
 
