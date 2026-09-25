@@ -43,10 +43,10 @@ class Renderer:
         self.loading_fruits = []
 
         fruit_names = [
-            "apple1.png",
-            "banana1.png",
-            "watermelon1.png",
-            "orange1.png"
+            "apple.png",
+            "pineapple.png",
+            "watermelon.png",
+            "orange.png"
         ]
 
         for _ in range(8):
@@ -165,7 +165,27 @@ class Renderer:
             self.logo = None
 
         # Cœurs (vies)
-        self._heart_surf = self._make_heart()
+        heart_path = _IMAGES / "heart.png"
+        empty_heart_path = _IMAGES / "heart_empty.png"
+
+        self._heart_surf = pygame.image.load(
+            str(heart_path)
+        ).convert_alpha()
+
+        self._empty_heart_surf = pygame.image.load(
+            str(empty_heart_path)
+        ).convert_alpha()
+
+        # Taille des cœurs dans le HUD
+        heart_size = (32, 32)
+
+        self._heart_surf = pygame.transform.smoothscale(
+            self._heart_surf, heart_size
+        )
+
+        self._empty_heart_surf = pygame.transform.smoothscale(
+            self._empty_heart_surf, heart_size
+        )
 
     def load_sounds(self):
 
@@ -674,13 +694,19 @@ class Renderer:
         # Vies (cœurs)
         for i in range(sm.MAX_LIVES):
             x = self.width - 45 - i * 40
+
             if i < sm.lives:
-                self.screen.blit(self._heart_surf, (x, 12))
+                # ❤️ Vie restante
+                self.screen.blit(
+                    self._heart_surf,
+                    (x, 12)
+                )
             else:
-                # Cœur vide (plus sombre)
-                empty = self._heart_surf.copy()
-                empty.set_alpha(60)
-                self.screen.blit(empty, (x, 12))
+                # 🤍 Vie perdue
+                self.screen.blit(
+                    self._empty_heart_surf,
+                    (x, 12)
+                )
 
         # Combo
         if sm.combo_label:
@@ -712,21 +738,3 @@ class Renderer:
             flash.fill((255, 100, 0, a))
             self.screen.blit(flash, (0, 0))
 
-    # ──────────────────────────────────────────────
-    # Helpers
-    # ──────────────────────────────────────────────
-
-    def _make_heart(self) -> pygame.Surface:
-        """Dessine un cœur rouge 30×30 en pur Pygame (pas de sprite requis)."""
-        size = 30
-        surf = pygame.Surface((size, size), pygame.SRCALPHA)
-        # Deux cercles + triangle
-        r = size // 4
-        pygame.draw.circle(surf, RED, (r,     r), r)
-        pygame.draw.circle(surf, RED, (3 * r, r), r)
-        pygame.draw.polygon(surf, RED, [
-            (0,      r),
-            (size,   r),
-            (size // 2, size),
-        ])
-        return surf
