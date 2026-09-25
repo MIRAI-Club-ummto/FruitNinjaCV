@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from src.fruits.fruit import Fruit
 from src.fruits.apple import Apple
-from src.fruits.banana import Banana
+from src.fruits.pineapple import Pineapple
 from src.fruits.watermelon import Watermelon
 from src.fruits.orange import Orange
 from src.fruits.bomb import Bomb
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 # ── Paramètres de spawn ──────────────────────────
-_FRUIT_TYPES = [Apple, Banana, Watermelon, Orange]
+_FRUIT_TYPES = [Apple, Pineapple, Watermelon, Orange]
 
 # Probabilité relative de chaque type (indice identique)
 _SPAWN_WEIGHTS = [0.30, 0.25, 0.20, 0.25]
