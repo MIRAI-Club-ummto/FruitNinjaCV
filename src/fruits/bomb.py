@@ -42,9 +42,9 @@ class Bomb(Fruit):
         self.state = FruitState.EXPLODING
         self._explosion_timer = self.EXPLOSION_DURATION
 
-    def update(self, screen_height: int) -> None:
+    def update(self, screen_width: int, screen_height: int) -> None:
         if self.state == FruitState.ALIVE:
-            self._update_alive(screen_height)
+            self._update_alive(screen_width, screen_height)
         elif self.state == FruitState.EXPLODING:
             self._explosion_timer -= 1
             if self._explosion_timer <= 0:
